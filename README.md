@@ -2,7 +2,7 @@
 
 # Lincoln Bank
 
-**Lincoln Bank** is a web-based banking application built with Django. It enables users to manage accounts, transfer funds, view transactions, and perform basic banking operations securely.
+Lincoln Bank is a web-based banking application built with Django. It enables users to manage accounts, transfer funds, view transactions, and perform basic banking operations securely.
 
 ---
 
