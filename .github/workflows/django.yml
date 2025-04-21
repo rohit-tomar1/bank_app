@@ -27,6 +27,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Django tests
-        run: |
-          python manage.py test
+      - name: Run Django Tests
+        run: python manage.py test
+        working-directory: ./bank_app
