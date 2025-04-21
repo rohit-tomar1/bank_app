@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      td,
+      th {
+        border-bottom: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+
+      td {
+        background-color: #ffffff;
+      }
+
+      tr:first-child {
+        background-color: #dddddd !important;
+      }
+
+      .statusChip {
+        color: #02b15a;
+        background-color: #02b15a33;
+        text-align: center;
+        width: 70px;
+        border-radius: 8px;
+        font-size: smaller;
+      }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var buttons = document.querySelectorAll(".pdf-button");
+        buttons.forEach(function (button) {
+          button.addEventListener("click", function () {
+            var summary = button.getAttribute("data-summary");
+            var type = button.getAttribute("data-trans");
+            var date = button.getAttribute("data-date");
+            var amount = button.getAttribute("data-amount");
+            // Call your function passing the data
+            generateAndDownloadPdf(type, amount, date, summary);
+          });
+        });
+      });
+
+      function generateAndDownloadPdf(type, amount, date, summary) {
+        // Define your PDF document definition
+        var docDefinition = {
+          content: [
+            {
+              text: "Receipt",
+              fontSize: 24,
+              bold: true,
+              alignment: "center",
+              margin: [0, 10, 10, 10],
+            },
+            {
+              text: `£ ${amount} ${type} Successful`,
+              fontSize: 16,
+              alignment: "center",
+              margin: [0, 10, 10, 10],
+            },
+            {
+              table: {
+                margin: [0, 10, 10, 10],
+                alignment: "center",
+                headerStyles: {
+                  fillColor: "#97144D", // Background color for the header row
+                },
+                headerRows: 1,
+                widths: ["*", "*", "*", "*", "*"],
+                body: [
+                  ["Date", "Transaction Type", "Amount", "Remark", "Status"], // Table header
+                  [date, type, amount, summary, "Success"], // Table data
+                ],
+              },
+            },
+
+            // Add more content as needed
+          ],
+        };
+
+        // Generate the PDF
+        pdfMake.createPdf(docDefinition).download("receipt.pdf");
+      }
+    </script>
+  </head>
+
+  <body>
+    {% if tableData %}
+    <table>
+      <tr>
+        <th>Date</th>
+        <th>Transaction Type</th>
+        <th>Amount</th>
+        <th>Remark</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+
+      {% for obj in tableData %}
+      <tr>
+        <td>{{obj.date}}</td>
+        <td>{{obj.transType}}</td>
+        <td>£{{obj.amount}}</td>
+        <td>{{obj.summary}}</td>
+        <td>
+          <div class="statusChip">Success</div>
+        </td>
+        <td>
+          <button
+            class="pdf-button"
+            data-summary="{{obj.summary}}"
+            data-trans="{{obj.transType}}"
+            data-amount="{{obj.amount}}"
+            data-date="{{obj.date}}"
+          >
+            Download Receipt
+          </button>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% else %}
+    <h3>No Transactions Done yet</h3>
+
+    {% endif %}
+  </body>
+</html>

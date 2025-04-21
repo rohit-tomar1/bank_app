@@ -1,0 +1,207 @@
+{% load static %}
+<!DOCTYPE html>
+
+<!-- {% block content %} -->
+
+<html>
+
+<head>
+    <style>
+        .container {
+            margin: -1rem;
+            overflow: hidden;
+        }
+
+        .right {
+            width: 85%;
+            float: right;
+            margin-top: 0;
+            background-color: #ebebeb;
+            height: calc(100vh - 3rem);
+        }
+
+        .left {
+            width: 15%;
+            float: left;
+            margin-top: 0;
+            background-color: #ffffff;
+            height: calc(100vh - 4rem);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            padding: 1.5rem;
+            background-color: #f7f5f5;
+        }
+
+        .vertical-menu {
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+        }
+
+        .vertical-menu {
+            div {
+                background-color: #ffffff;
+                color: black;
+                display: block;
+                text-decoration: none;
+            }
+        }
+
+        .vertical-menu {
+            div:hover {
+                background-color: #97144d;
+                color: #ffffff
+            }
+
+            div:active {
+                background-color: #97144d;
+                color: #ffffff
+            }
+        }
+
+        .itemNav {
+            display: flex !important;
+            justify-content: space-evenly;
+            align-items: center;
+            padding-left: 0rem;
+            padding-right: 2rem;
+        }
+
+        .active {
+            background-color: #97144d !important;
+            color: #ffffff !important;
+        }
+
+        .menu {
+            display: flex;
+            flex-direction: column-reverse;
+        }
+        .questions{
+            font-weight: bold;
+        }
+        .quesAns{
+            padding-left: 1rem;
+            padding-right: 1rem;
+            padding-bottom: 0.5rem;
+        }
+        .recurring {
+            padding-right: 0rem;
+            padding-left: 0.5rem;
+        }
+    </style>
+    <script>
+        function showContent(option) {
+            if (option == "dashboardOption") {
+                window.location.href = '/main/'
+            } else if (option == "transactionOption") {
+                window.location.href = '/transaction/'
+            } else if (option == "cardOption") {
+                window.location.href = '/card/'
+            } else if (option == "loanOption") {
+                window.location.href = '/loan/'
+            } else if (option == "investmentOption") {
+                window.location.href = '/investment/'
+            } else if (option == "settingsOption") {
+                window.location.href = '/settings/'
+            } else if (option == "chequebookOption") {
+                window.location.href = '/chequebook/'
+            }
+            else {
+                window.location.href = '/help/'
+            }
+        }
+
+        function logOut() {
+            window.history.replaceState(null, null, "/login");
+            sessionStorage.clear();
+            window.location.href = "/logout";     
+        }
+
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row header"> </div>
+        <div class="left">
+            <div class="vertical-menu" id="menuNav">
+                <div class="itemNav" onclick="showContent('dashboardOption')" id="dashboardOption-nav">
+                    <img src="{% static 'img/dashboard.png' %}" alt="image">
+                    <p>Dashboard</p>
+                </div>
+                <div class="itemNav" onclick="showContent('transactionOption')" id="transactionOption-nav">
+                    <img src="{% static 'img/transaction.png' %}" alt="image">
+                    <p>Transaction</p>
+                </div>
+                <div class="itemNav" onclick="showContent('cardOption')" id="cardOption-nav"
+                    style="padding-right: 4.5rem;">
+                    <img src="{% static 'img/card.png' %}" alt="image">
+                    <p>Card</p>
+                </div>
+                <div class="itemNav" onclick="showContent('chequebookOption')" id="chequebookOption-nav"
+                    style="padding-right: 1.5rem;">
+                    <img src="{% static 'img/cheque.png' %}" alt="image" style="width: 33px;
+                        height: 40px;">
+                    <p>Cheque Book</p>
+                </div>
+                <div class="itemNav" onclick="showContent('loanOption')" id="loanOption-nav"
+                    style="padding-right: 4.5rem;">
+                    <img src="{% static 'img/loan.png' %}" alt="image">
+                    <p>Loan</p>
+                </div>
+                <div class="itemNav recurring" onclick="showContent('investmentOption')" id="investmentOption-nav">
+                    <img src="{% static 'img/investment.png' %}" alt="image">
+                    <p>Recurring Payment</p>
+                </div>
+                <div class="itemNav" onclick="showContent('settingsOption')" id="settingsOption-nav"
+                    style="padding-right: 3.5rem;">
+                    <img src="{% static 'img/setting.png' %}" alt="image">
+                    <p>Settings</p>
+                </div>
+            </div>
+            <div class="vertical-menu menu">
+                <div class="itemNav" onclick="logOut()" id="logoutOption-nav" style="padding-right: 3.5rem;">
+                    <img src="{% static 'img/logout.png' %}" alt="image">
+                    <p>Log out</p>
+                </div>
+                <div class="itemNav active" onclick="showContent('helpOption')" id="helpOption-nav"
+                    style="padding-right: 4.9rem;">
+                    <img src="{% static 'img/help.png' %}" alt="image">
+                    <p>Help</p>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <h2 style="padding-left: 1rem; padding-bottom: 1rem;">Frequenty Asked Questions</h3>
+            <div class="quesAns">
+                <p class="questions">How do I open a new account?</p>
+                <p class="answers">To open a new account, you can visit our nearest branch with the required documents
+                    or apply online through our website.</p>
+            </div>
+            <div class="quesAns">
+                <p class="questions">What documents do I need to open an account?</p>
+                <p class="answers">Typically, you will need a valid ID proof (such as a passport or driver's license), address proof, and proof of income.</p>
+            </div>
+            <div class="quesAns">
+                <p class="questions">How can I check my account balance?</p>
+                <p class="answers">You can check your account balance through our mobile banking app, internet banking portal, ATMs, or by visiting a branch.</p>
+            </div>
+            <div class="quesAns">
+                <p class="questions">What should I do if I lose my debit/credit card?</p>
+                <p class="answers">If you lose your card, please report it immediately by contacting our customer service helpline or through our mobile banking app. We will block your card to prevent any unauthorized transactions and issue you a new one.</p>
+            </div>
+            <div class="quesAns">
+                <p class="questions">How can I transfer funds to another account?</p>
+                <p class="answers">You can transfer funds through our internet banking portal or mobile banking app. Simply add the beneficiary's account details and initiate the transfer.</p>
+            </div>
+            
+        </div>
+    </div>
+</body>
+
+</html>
+<!--style="padding: 1px 80px;-->
+<!-- {% endblock content %} -->

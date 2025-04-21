@@ -1,0 +1,188 @@
+{% load static %}
+<html>
+  <head>
+    <style>
+      .container {
+        margin: 0;
+        overflow: hidden;
+      }
+
+      .left {
+        width: 40% !important;
+        float: left !important;
+        margin-top: 0 !important;
+        background-color: #97144d !important;
+        height: 100vh !important;
+      }
+
+      .right {
+        width: 60% !important;
+        float: right !important;
+        margin-top: 0 !important;
+        background-color: #ffffff !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        flex-direction: column !important;
+      }
+
+      .alignAccordion {
+        display: flex;
+      }
+
+      .alignSignUps {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        padding-top: 5rem;
+      }
+    </style>
+    <script>
+      function validateForm() {
+        var first_name = document.getElementById("first_name").value;
+        var middle_name = document.getElementById("middle_name").value;
+        var last_name = document.getElementById("last_name").value;
+        if (first_name && last_name) {
+          return true;
+        } else {
+          alert("Please fill all the fields");
+          return false;
+        }
+      }
+      function openPrivacyPolicy() {
+            window.open("/privacyPolicy", "Privacy Policy", "width=600,height=400");
+            return false;
+        }
+    </script>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="left">
+        <img src="{% static 'img/logo.png' %}" alt="image" style="margin-top:4rem ;">
+      </div>
+      <div class="right alignSignUps">
+        <h1>Online Banking Services</h1>
+        <p style="color: #000000">Login into your account</p>
+        <form method="POST" style="width: 45%">
+          {% csrf_token %}
+          <div class="alignAccordion">
+            <hr width="60px" color="#931a46" />
+            <hr width="60px" color="grey" />
+            <hr width="60px" color="grey" />
+            <hr width="60px" color="grey" />
+          </div>
+          <label for="account_type" style="color: grey">Account Type</label><br />
+          <select
+            id="account_type"
+            name="account_type"
+            value="{{ account_type }}"
+            style="
+              font-size: 11px;
+              border: 2px solid grey;
+              border-radius: 7px;
+              padding: 5px;
+            "
+          >
+            <option value="saving">Saving</option>
+            <option value="current">Current</option>
+          </select>
+          <br />
+          <label for="title" style="color: #000000">Title</label><br />
+          <select
+            id="title"
+            name="title"
+            value="{{ title }}"
+            style="
+              font-size: 15px;
+              border: 2px solid grey;
+              border-radius: 7px;
+              padding: 5px;
+              margin-bottom: 1rem;
+            "
+          >
+            <option value="Mr">Mr</option>
+            <option value="Miss">Miss</option>
+            <option value="Mrs">Mrs</option>
+            </select>
+          <br />
+          <label for="first_name" style="color: #000000">First name</label><br />
+          <input type="hidden" name="form_id" id="signup1" value="signup1" />
+          <input
+            type="text"
+            id="first_name"
+            name="first_name"
+            value="{{ first_name }}"
+            style="
+              font-size: 11px;
+              border: 2px solid grey;
+              border-radius: 7px;
+              padding: 5px;
+            "
+          /><br /><br />
+          <label for="middle_name" style="color: #000000; font-size: 15px"
+            >Middle name
+            <label for="last_name" style="color: #000000; font-size: 15px; margin-left: -3rem;"
+              ><span style="display: inline-block; width: 125px"> </span>Last
+              name</label
+            ></label
+          ><br />
+          <input
+            type="text"
+            id="middle_name"
+            name="middle_name"
+            value="{{ middle_name }}"
+            style="
+              font-size: 11px;
+              border: 2px solid grey;
+              border-radius: 7px;
+              padding: 5px;
+            "
+          /><span style="display: inline-block; width: 2px"></span
+          ><input
+            type="text"
+            id="last_name"
+            name="last_name"
+            value="{{ last_name }}"
+            style="
+              font-size: 11px;
+              border: 2px solid grey;
+              border-radius: 7px;
+              padding: 5px;
+            "
+          /><br />
+          <label>
+            <input type="checkbox" name="privacy_policy" required>
+            I agree to the <a href="#" onclick="openPrivacyPolicy()">Privacy Policy</a>
+          </label><br>
+
+          <div style="margin-top: 2rem">
+            <input
+              type="submit"
+              name="actionBtn"
+              value="Proceed"
+              onclick="return validateForm()"
+              style="padding: 1px 153px; background-color:#931a46; color:white; font-size:15px; border: 2px solid grey; border-radius: 7px; width: -webkit-fill-available;
+              height: 2rem; margin-bottom: 1rem;"
+            />
+          </div>
+          <p>
+            Already have an account?
+            <a
+              style="
+                background-color: #931a46;
+                color: white;
+                font-size: 11px;
+                border: 2px solid grey;
+                border-radius: 7px;
+                padding: 8px;
+              "
+              href="/login"
+              >Sign In</a
+            >
+          </p>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

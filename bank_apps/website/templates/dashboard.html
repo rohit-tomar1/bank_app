@@ -1,0 +1,232 @@
+{% load static %}
+<html>
+
+<head>
+    <style>
+        .dashboardContainer {
+            padding: 3rem;
+        }
+
+        .flexRow {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flexBox {
+            width: 20rem;
+            height: 6rem;
+            background-color: white;
+            border-radius: 8px;
+        }
+
+        .flexBox1 {
+            width: 20rem;
+            height: 4rem;
+            background-color: white;
+            border-radius: 8px;
+        }
+
+        .align {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .align1 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 0;
+            padding: 0.2rem;
+        }
+
+        .textAlign {
+            padding-left: 1.5rem;
+            line-height: 8px;
+        }
+
+        img {
+            margin-top: 0.6rem;
+        }
+
+        /* styles.css */
+        /* Style the clickable div */
+        .clickable-div {
+            cursor: pointer;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 4% auto;
+            /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            height: 50%;
+            /* Could be more or less, depending on screen size */
+        }
+
+        /* Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .row1{
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+    <script src="{% static 'js/script.js' %}"></script>
+    <script>
+        function getDivId(element) {
+            var divId = element.id;
+            var otherHtml = `{% with data='${divId}' %}{% include 'transactionForm.html' %}{% endwith %}`;
+            var transferHtml = `{% include 'transferForm.html' %}`;
+            if (divId == 'transfer') {
+                console.log('html', divId)
+                var htmlFile = transferHtml
+            }
+            else {
+                console.log('html12', divId)
+                var htmlFile = otherHtml
+            }
+            document.getElementById('included-html-container').innerHTML = htmlFile;
+        }
+
+    </script>
+</head>
+
+<body>
+    <div class="dashboardContainer">
+        <div>
+            <div style="display: flex;
+            justify-content: space-between;">
+                <div class="row">Good Morning
+                    <h2>{{username}}</h6>
+                </div>
+                <div>
+                    <h3 style="text-align: end;">Account No : {{account_number}}</h6>
+                    <h3 style="text-align: end;">Account Type : {{account_type}}</h6>
+                </div>
+            </div>
+
+        </div>
+        <div class="flexRow">
+            <div class="flexBox">
+                <div class="row align">
+                    <img src="{% static 'img/pounds_icon.png' %}" alt="image">
+                    <div class="textAlign">
+                        <p>Total Balance</p>
+                        <b>&pound;
+                            {{totalBalance}}</b>
+                    </div>
+                </div>
+
+            </div>
+            <div class="flexBox">
+                <div class="row align">
+                    <img src="{% static 'img/income.png' %}" alt="image">
+                    <div class="textAlign">
+                        <p>Total Income</p>
+                        <b>&pound;
+                            {{totalIncome}}</b>
+                    </div>
+                </div>
+            </div>
+            <div class="flexBox">
+                <div class="row align">
+                    <img src="{% static 'img/outcome.png' %}" alt="image">
+                    <div class="textAlign">
+                        <p>Total Outcome</p>
+                        <b>&pound;
+                            {{totalOutcome}}</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <h4>Quick Actions</h4>
+        </div>
+        <div class="flexRow">
+            <div class="flexBox1 openPopupDiv clickable-div" id="transfer" onclick="getDivId(this)">
+                <div class="row align1">
+                    <img src="{% static 'img/transfer.png' %}" alt="image">
+                    <div class="textAlign">
+                        <h3>Transfer</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="flexBox1 openPopupDiv clickable-div" id="withdraw" onclick="getDivId(this)">
+                <div class="row align1">
+                    <img src="{% static 'img/withdraw.png' %}" alt="image">
+                    <div class="textAlign">
+                        <h3>Withdraw</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="flexBox1 openPopupDiv clickable-div" id="deposit" onclick="getDivId(this)">
+                <div class="row align1">
+                    <img src="{% static 'img/deposit.png' %}" alt="image">
+                    <div class="textAlign">
+                        <h3>Deposit</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row1">
+            <h4>Recent Transaction (Top 4)</h4>
+            <div>
+                {% block TransactionTable %}
+                {% with tableData=tableData|slice:":4" %}
+                {% include "table.html" %}
+                {% endwith %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="included-html-container"></div>
+        </div>
+    </div>
+    <!-- </div> -->
+</body>
+
+</html>

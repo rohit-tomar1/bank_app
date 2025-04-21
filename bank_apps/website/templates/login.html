@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+
+
+
+<html>
+
+<head>
+  <style>
+    .container {
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .left {
+      width: 40% !important;
+      float: left !important;
+      margin-top: 0 !important;
+      background-color: #97144D !important;
+      height: 100vh !important;
+    }
+
+    .right {
+      width: 60% !important;
+      float: right !important;
+      margin-top: 0 !important;
+      background-color: #ffffff !important;
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      flex-direction: column !important;
+    }
+
+    .alignAccordion {
+      display: flex;
+    }
+
+    .alignSignUps {
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      padding-top: 5rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="left">
+      <img src="{% static 'img/logo.png' %}" alt="image" style="margin-top:4rem ;">
+    </div>
+    <div class="right alignSignUps ">
+      <h1>Online Banking Services</h1>
+      <h3 style="color:#000000">Login into your account</h3>
+      <form method="POST" action="{% url 'login' %}" style="width:45%">
+        {% csrf_token %}
+        <label for="email" style="color:#000000; font-size:15px;">Enter your email address</label><br>
+        <input type="text" id="email" name="email"
+          style="font-size:15px; border: 2px solid grey; border-radius: 7px;padding: 5px; width: -webkit-fill-available; margin-bottom: 1rem;"><br>
+        <label for="password" style="color:#000000; font-size:15px;">Enter your password</label><br>
+        <input type="password" id="password" name="password"
+          style="font-size:15px; border: 2px solid grey; border-radius: 7px;padding: 5px; width: -webkit-fill-available; margin-bottom: 1rem;"><br><br>
+        {% if error_message %}
+        <p style="color:red"> {{error_message}}</p>
+        {% endif %}
+        <input type="submit" value="Login"
+          style="padding: 1px 153px; background-color:#931a46; color:white; font-size:15px; border: 2px solid grey; border-radius: 7px; width: -webkit-fill-available;
+          height: 2rem; margin-bottom: 1rem;">
+        <p>Don’t have an account? <a
+            style="background-color: #931a46; color:white; font-size:15px; border: 2px solid grey; border-radius: 7px;padding: 8px; width: 6rem;"
+            href="/signup1">Sign Up</a></p>
+      </form>
+    </div>
+  </div>
+</body>
+
+</html>

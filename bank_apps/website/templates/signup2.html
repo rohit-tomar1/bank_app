@@ -1,0 +1,99 @@
+{% load static %}
+<html>
+
+<head>
+  <style>
+    .container {
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .left {
+      width: 40% !important;
+      float: left !important;
+      margin-top: 0 !important;
+      background-color: #97144D !important;
+      height: 100vh !important;
+    }
+
+    .right {
+      width: 60% !important;
+      float: right !important;
+      margin-top: 0 !important;
+      background-color: #ffffff !important;
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      flex-direction: column !important;
+    }
+
+    .alignAccordion {
+      display: flex;
+    }
+
+    .alignSignUps {
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      padding-top: 5rem;
+    }
+  </style>
+   <script>
+    function validateForm() {
+      var email = document.getElementById("email").value;
+      var phone_number = document.getElementById("phone_number").value;
+      var dob = document.getElementById("dob").value;
+      if (email && phone_number && dob) {
+        return true;
+      }
+      else {
+        alert("Please fill all the fields");
+        return false
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="left">
+      <img src="{% static 'img/logo.png' %}" alt="image" style="margin-top:4rem ;">
+    </div>
+    <div class="right alignSignUps ">
+      <h1>Online Banking Services</h1>
+      <p style="color:#000000">Login into your account</p>
+      <form method="POST"  style="width:45%">
+        {% csrf_token %}
+        <div class="alignAccordion">
+          <hr width="60px" color="grey" />
+          <hr width="60px" color="#931a46" />
+          <hr width="60px" color="grey" />
+          <hr width="60px" color="grey" />
+        </div>
+        <input type="hidden" name="form_id" id="signup2" value="signup2">
+        <label for="email" style="color:#000000; font-size:15px;">Email</label><br>
+        <input type="email" id="email" name="email" value="{{ email }}"
+          style="font-size:11px; border: 2px solid grey; border-radius: 7px;padding: 5px;  margin-bottom: 1rem;"><br>
+        <label for="phone_number" style="color:#000000; font-size:15px;">Phone Number</label><br>
+        <input type="text" id="phone_number" name="phone_number" value="{{ phone_number }}" minlength="10" maxlength="10" pattern="[0-9]{10}"
+          style="font-size:11px; border: 2px solid grey; border-radius: 7px;padding: 5px;"><br><br>
+        <label for="dob" style="color:#000000; font-size:15px;">Date of Birth</label><br>
+        <input type="date" id="dob" name="dob" value="{{ dob }}"
+          style="font-size:11px; border: 2px solid grey; border-radius: 7px;padding: 5px; width: inherit;"><br><br>
+          {% if error_message %}
+          <p style="color:red"> {{error_message}}</p>
+          {% endif %}
+          <div style="margin-top: 1rem;">
+          <input type = "submit" name ="actionBtn" value="Back" style="background-color: white; color:#931a46 ;font-size:15px; border: 2px solid grey; border-radius: 7px;padding: 5px; width:45%;"/>
+        <input type = "submit" name ="actionBtn" value="Proceed"  onclick="return validateForm()" style="background-color: #931a46; color:white; font-size:15px; border: 2px solid grey; border-radius: 7px;padding: 5px; width: 45%;"/>
+          </div>
+        <p>Already have an account? <a
+            style="background-color: #931a46; color:white; font-size:12px; border: 2px solid grey; border-radius: 7px;padding: 8px;"
+            href="/login">Sign In</a></p>
+      </form>
+    </div>
+  </div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+<html>
+
+<head>
+    <style>
+        .formAlignment {
+            display: flex;
+            flex-direction: column;
+            padding: 3rem;
+            width: max-content;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div>
+        <form id="transferForm1" method="POST">
+            {% csrf_token %}
+
+            <div class="formAlignment">
+                <label for="account_number" style="color:grey; font-size:16px;">
+                    Enter Account Number
+                </label><br>
+                <input type="number" id="account_number" name="account_number" minlength="1" maxlength="10" pattern="[0-9]+"
+                    style="font-size:16px; border: 2px solid grey; border-radius: 7px;padding: 5px;"><br>
+                <label for="amount" style="color:grey; font-size:16px;">Enter Amount</label><br>
+                <input type="number" id="amount" name="amount" minlength="1" maxlength="6" pattern="[0-9]+"
+                    style="font-size:16px; border: 2px solid grey; border-radius: 7px;padding: 5px;"><br>
+                <input type="submit" value="transfer" name="transType" id="transferBtn" onclick="return validate()"
+                    style="padding: 1px 153px; background-color:#931a46; color:white; font-size:16px; border: 2px solid grey; border-radius: 7px;">
+
+            </div>
+
+        </form>
+    </div>
+</body>
+
+</html>

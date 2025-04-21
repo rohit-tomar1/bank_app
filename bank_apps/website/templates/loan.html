@@ -1,0 +1,192 @@
+{% load static %}
+<!DOCTYPE html>
+
+<head>
+    <style>
+        .container {
+            margin: -1rem;
+            overflow: hidden;
+        }
+
+        .right {
+            width: 85%;
+            float: right;
+            margin-top: 0;
+            background-color: #ebebeb;
+            height: calc(100vh - 3rem);
+        }
+
+        .left {
+            width: 15%;
+            float: left;
+            margin-top: 0;
+            background-color: #ffffff;
+            height: calc(100vh - 4rem);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            padding: 1.5rem;
+            background-color: #f7f5f5;
+        }
+
+        .vertical-menu {
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+        }
+
+        .vertical-menu {
+            div {
+                background-color: #ffffff;
+                color: black;
+                display: block;
+                text-decoration: none;
+            }
+        }
+
+        .vertical-menu {
+            div:hover {
+                background-color: #97144d;
+                color: #ffffff
+            }
+
+            div:active {
+                background-color: #97144d;
+                color: #ffffff
+            }
+        }
+
+        .itemNav {
+            display: flex !important;
+            justify-content: space-evenly;
+            align-items: center;
+            padding-left: 0rem;
+            padding-right: 2rem;
+        }
+
+        .active {
+            background-color: #97144d !important;
+            color: #ffffff !important;
+        }
+
+        .menu {
+            display: flex;
+            flex-direction: column-reverse;
+        }
+
+        .formAlignment {
+            display: flex;
+            flex-direction: column;
+            padding: 3rem;
+            width: max-content;
+        }
+        .recurring {
+            padding-right: 0rem;
+            padding-left: 0.5rem;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
+    <script>
+
+        function showContent(option) {
+            if (option == "dashboardOption") {
+                window.location.href = '/main/'
+            } else if (option == "transactionOption") {
+                window.location.href = '/transaction/'
+            } else if (option == "cardOption") {
+                window.location.href = '/card/'
+            } else if (option == "chequebookOption") {
+                window.location.href = '/chequebook/'
+            } else if (option == "loanOption") {
+                window.location.href = '/loan/'
+            } else if (option == "investmentOption") {
+                window.location.href = '/investment/'
+            } else if (option == "settingsOption") {
+                window.location.href = '/settings/'
+            } else {
+                window.location.href = '/help/'
+            }
+        }
+
+        function logOut() {
+            window.history.replaceState(null, null, "/login");
+            sessionStorage.clear();
+            window.location.href = "/logout";
+        }
+
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row header"> </div>
+        <div class="left">
+            <div class="vertical-menu" id="menuNav">
+                <div class="itemNav" onclick="showContent('dashboardOption')" id="dashboardOption-nav">
+                    <img src="{% static 'img/dashboard.png' %}" alt="image">
+                    <p>Dashboard</p>
+                </div>
+                <div class="itemNav" onclick="showContent('transactionOption')" id="transactionOption-nav">
+                    <img src="{% static 'img/transaction.png' %}" alt="image">
+                    <p>Transaction</p>
+                </div>
+                <div class="itemNav" onclick="showContent('cardOption')" id="cardOption-nav"
+                    style="padding-right: 4.5rem;">
+                    <img src="{% static 'img/card.png' %}" alt="image">
+                    <p>Card</p>
+                </div>
+                <div class="itemNav" onclick="showContent('chequebookOption')" id="chequebookOption-nav"
+                    style="padding-right: 1.5rem;">
+                    <img src="{% static 'img/cheque.png' %}" alt="image" style="width: 33px;
+                     height: 40px;">
+                    <p>Cheque Book</p>
+                </div>
+                <div class="itemNav active" onclick="showContent('loanOption')" id="loanOption-nav"
+                    style="padding-right: 4.5rem;">
+                    <img src="{% static 'img/loan.png' %}" alt="image">
+                    <p>Loan</p>
+                </div>
+                <div class="itemNav recurring" onclick="showContent('investmentOption')" id="investmentOption-nav">
+                    <img src="{% static 'img/investment.png' %}" alt="image">
+                    <p>Recurring Payment</p>
+                </div>
+                <div class="itemNav" onclick="showContent('settingsOption')" id="settingsOption-nav"
+                    style="padding-right: 3.5rem;">
+                    <img src="{% static 'img/setting.png' %}" alt="image">
+                    <p>Settings</p>
+                </div>
+            </div>
+            <div class="vertical-menu menu">
+                <div class="itemNav" onclick="logOut()" id="logoutOption-nav" style="padding-right: 3.5rem;">
+                    <img src="{% static 'img/logout.png' %}" alt="image">
+                    <p>Log out</p>
+                </div>
+                <div class="itemNav" onclick="showContent('helpOption')" id="helpOption-nav"
+                    style="padding-right: 4.9rem;">
+                    <img src="{% static 'img/help.png' %}" alt="image">
+                    <p>Help</p>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <h2 style="text-align: center;">Raise Your Loan Request</h2>
+            <h3 style="text-align: center;">Our Team will contact you after this.</h3>
+            <div class="container" style="display: flex; justify-content: center;">
+                    <form id="chequebookForm" method="POST">
+                        <div class="formAlignment">
+                            {% csrf_token %}
+                            <label for="summary" style="color:grey; font-size:16px;"> Enter Your Query</label><br>
+                            <input type="text" name="summary" placeholder="Enter Your Query." required style="font-size:16px; border: 2px solid grey; border-radius: 7px;padding: 5px;">
+                            <button type="submit" style="padding: 1px 153px; background-color:#931a46; color:white; font-size:16px; border: 2px solid grey; border-radius: 7px; margin-top: 3rem;
+                            height: 2rem;">Submit</button>
+                        </div>    
+                    </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

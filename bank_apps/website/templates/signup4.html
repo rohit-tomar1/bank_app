@@ -1,0 +1,96 @@
+
+{% load static %}
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <style>
+      .container {
+        margin: 0;
+        overflow: hidden;
+      }
+  
+      .left {
+        width: 40% !important;
+        float: left !important;
+        margin-top: 0 !important;
+        background-color: #97144D !important;
+        height: 100vh !important;
+      }
+  
+      .right {
+        width: 60% !important;
+        float: right !important;
+        margin-top: 0 !important;
+        background-color: #ffffff !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        flex-direction: column !important;
+      }
+  
+      .alignAccordion {
+        display: flex;
+      }
+  
+      .alignSignUps {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        padding-top: 5rem;
+      }
+    </style>
+    <script>
+      function validateForm() {
+        var password = document.getElementById("password").value;
+        var confirm_password = document.getElementById("confirm_password").value;
+  
+        if (password && confirm_password) {
+          if (password !== confirm_password) {
+            alert("Passwords do not match");
+            return false; // Prevent form submission
+          }
+          else {
+            return true; // Allow form submission
+          }
+        }
+        else {
+          alert("Please fill both the fields");
+          return false;
+        }
+      }
+    </script>
+  </head>
+
+<body>
+  <div class="container">
+    <div class="left">
+      <img src="{% static 'img/logo.png' %}" alt="image" style="margin-top:4rem ;">
+    </div>
+    <div class="right alignSignUps ">
+        <h1>Online Banking Services</h1>
+        <p style="color:#000000">Login into your account</p>
+        <form method="POST"  style="width:45%">
+          {% csrf_token %}
+          <div class="alignAccordion">
+            <hr width="60px" color="grey" />
+            <hr width="60px" color="grey" />
+            <hr width="60px" color="grey" />
+            <hr width="60px" color="#931a46" />
+          </div>
+        <input type="hidden" name="form_id" id="signup4" value="signup4">
+        <label for="password" style="color:#000000; font-size:15px;">Password</label><br>
+        <input type="text" id="password" name="password" style="font-size:11px; border: 2px solid grey; border-radius: 7px;padding: 5px; margin-bottom: 1rem;"><br>
+        <label for="confirm_password" style="color:#000000; font-size:15px;">Confirm Password</label><br>
+        <input type="password" id="confirm_password" name="confirm_password" style="font-size:11px; border: 2px solid grey; border-radius: 7px;padding: 5px;  margin-bottom: 1rem;"><br><br>
+        <input type = "submit" name ="actionBtn" value="Back" style="background-color: white; color:#931a46; font-size:15px; border: 2px solid grey; border-radius: 7px;padding: 5px; width: 45%;"/>
+        <input type = "submit" name ="actionBtn" value="Proceed" onclick="return validateForm()" style="background-color: #931a46; color:white; font-size:15px; border: 2px solid grey; border-radius: 7px;padding: 5px; width: 45%;"/>
+        <p>Already have an account? <a style="background-color: #931a46; color:white; font-size:11px; border: 2px solid grey; border-radius: 7px;padding: 8px;" href="/login">Sign In</a></p>
+      </form> 
+  </div>
+</div>
+</div>
+</body>
+
+</html>
+

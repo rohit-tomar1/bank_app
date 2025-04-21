@@ -1,0 +1,322 @@
+{% load static %}
+<!DOCTYPE html>
+
+<head>
+    <style>
+        .container {
+            margin: -1rem;
+            overflow: hidden;
+        }
+
+        .right {
+            width: 85%;
+            float: right;
+            margin-top: 0;
+            background-color: #ebebeb;
+            height: calc(100vh - 3rem);
+        }
+
+        .left {
+            width: 15%;
+            float: left;
+            margin-top: 0;
+            background-color: #ffffff;
+            height: calc(100vh - 4rem);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            padding: 1.5rem;
+            background-color: #f7f5f5;
+        }
+
+        .vertical-menu {
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+        }
+
+        .vertical-menu {
+            div {
+                background-color: #ffffff;
+                color: black;
+                display: block;
+                text-decoration: none;
+            }
+        }
+
+        .vertical-menu {
+            div:hover {
+                background-color: #97144d;
+                color: #ffffff
+            }
+
+            div:active {
+                background-color: #97144d;
+                color: #ffffff
+            }
+        }
+
+        .itemNav {
+            display: flex !important;
+            justify-content: space-evenly;
+            align-items: center;
+            padding-left: 0rem;
+            padding-right: 2rem;
+        }
+
+        .active {
+            background-color: #97144d !important;
+            color: #ffffff !important;
+        }
+
+        .menu {
+            display: flex;
+            flex-direction: column-reverse;
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+
+        }
+
+        .filters {
+            flex-grow: 1;
+            display: flex;
+            justify-content: inherit;
+        }
+
+        .filters>div {
+            background-color: #f7f5f5;
+            padding: 0.3rem;
+            min-width: 4rem;
+            text-align: center;
+            padding-right: 2.5rem;
+        }
+
+        .downloadBtn {
+            display: flex;
+            flex-grow: 2 !important;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .alignFilters {
+            margin-bottom: 3rem;
+            margin-left: 1rem;
+            background-color: #f7f5f5;
+        }  
+        .filterItems{
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+        .recurring {
+            padding-right: 0rem;
+            padding-left: 0.5rem;
+        }
+        
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var buttons = document.querySelectorAll('.pdf-all-button');
+            buttons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                  console.log(JSON.parse('{{ transactionData|safe }}'))
+                    generateAndDownloadPdfAll();
+
+                });
+            });
+        });
+
+        function generateAndDownloadPdfAll() {
+           var transData = JSON.parse('{{ transactionData|safe }}')
+            // Define your PDF document definition
+            var docDefinition = {
+                content: [
+                    { text: 'Transaction Statement', fontSize: 24, bold: true, alignment: "center", margin: [0, 10, 10, 10] },
+                    {
+                        table: {
+                            margin: [0, 10, 10, 10],
+                            alignment: "center",
+                            headerStyles: {
+                                fillColor: '#97144D'
+                            },
+                            headerRows: 1,
+                            widths: ['*', '*', '*', '*', '*'],
+                            body: [
+                                ['Date', 'Transaction Type' , 'Amount', 'Remark' ,'Status'],
+                                ...transData.map(transaction => [
+                                    transaction.fields['date'],
+                                    transaction.fields['transType'],
+                                    `£${transaction.fields['amount']}`,
+                                    transaction.fields['summary'],
+                                    "Success"
+                                ])
+                            ]
+
+                        }
+                    }
+
+                    // Add more content as needed
+                ]
+            };
+
+            // Generate the PDF
+            pdfMake.createPdf(docDefinition).download('statement.pdf');
+        }
+        function showContent(option) {
+            if (option == "dashboardOption") {
+                window.location.href = '/main/'
+            } else if (option == "transactionOption") {
+                window.location.href = '/transaction/'
+            } else if (option == "cardOption") {
+                window.location.href = '/card/'
+            } else if (option == "chequebookOption") {
+                window.location.href = '/chequebook/'
+            } else if (option == "loanOption") {
+                window.location.href = '/loan/'
+            } else if (option == "investmentOption") {
+                window.location.href = '/investment/'
+            } else if (option == "settingsOption") {
+                window.location.href = '/settings/'
+            } else {
+                window.location.href = '/help/'
+            }
+        }
+
+        function logOut() {
+            window.history.replaceState(null, null, "/login");
+            sessionStorage.clear();
+            window.location.href = "/logout";
+        }
+
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row header"> </div>
+        <div class="left">
+            <div class="vertical-menu" id="menuNav">
+                <div class="itemNav" onclick="showContent('dashboardOption')" id="dashboardOption-nav">
+                    <img src="{% static 'img/dashboard.png' %}" alt="image">
+                    <p>Dashboard</p>
+                </div>
+                <div class="itemNav active" onclick="showContent('transactionOption')" id="transactionOption-nav">
+                    <img src="{% static 'img/transaction.png' %}" alt="image">
+                    <p>Transaction</p>
+                </div>
+                <div class="itemNav" onclick="showContent('cardOption')" id="cardOption-nav"
+                    style="padding-right: 4.5rem;">
+                    <img src="{% static 'img/card.png' %}" alt="image">
+                    <p>Card</p>
+                </div>
+                <div class="itemNav" onclick="showContent('chequebookOption')" id="chequebookOption-nav"
+                    style="padding-right: 1.5rem;">
+                    <img src="{% static 'img/cheque.png' %}" alt="image" style="width: 33px;
+                    height: 40px;">
+                    <p>Cheque Book</p>
+                </div>
+                <div class="itemNav" onclick="showContent('loanOption')" id="loanOption-nav"
+                    style="padding-right: 4.5rem;">
+                    <img src="{% static 'img/loan.png' %}" alt="image">
+                    <p>Loan</p>
+                </div>
+                <div class="itemNav recurring" onclick="showContent('investmentOption')" id="investmentOption-nav">
+                    <img src="{% static 'img/investment.png' %}" alt="image">
+                    <p>Recurring Payment</p>
+                </div>
+                <div class="itemNav" onclick="showContent('settingsOption')" id="settingsOption-nav"
+                    style="padding-right: 3.5rem;">
+                    <img src="{% static 'img/setting.png' %}" alt="image">
+                    <p>Settings</p>
+                </div>
+            </div>
+            <div class="vertical-menu menu">
+                <div class="itemNav" onclick="logOut()" id="logoutOption-nav" style="padding-right: 3.5rem;">
+                    <img src="{% static 'img/logout.png' %}" alt="image">
+                    <p>Log out</p>
+                </div>
+                <div class="itemNav" onclick="showContent('helpOption')" id="helpOption-nav"
+                    style="padding-right: 4.9rem;">
+                    <img src="{% static 'img/help.png' %}" alt="image">
+                    <p>Help</p>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <div style="display: flex; justify-content: center;"><h2>Transactions</h2></div>
+            
+            <div class="container">
+                <div class="row alignFilters">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="filters">
+                            <div class="filterItems">
+                                <label for="date">Date</label>
+                                <input type="date" id="date-filter" name="date" value="{{date}}" />
+                            </div>
+                            <div class="filterItems">
+                                <label for="amount">Amount</label>
+                                <input type="text" id="amount-filter" name="amount" value="{{amount}}" />
+                            </div>
+                            <div class="filterItems">
+                                <label for="transType">Transaction Type</label>
+                                <select id="title" name="transType" value="{{transType}}" style="
+                                font-size: 11px;
+                                border: 2px solid grey;
+                                border-radius: 7px;
+                                padding: 5px;
+                              ">    
+                                    <option value = "None" {% if transType == "None" %} selected = "selected" {% endif %}> None </option>
+                                    <option value = "transfer" {% if transType == "Transfer" %} selected = "selected" {% endif %}> Transfer </option>
+                                    <option value = "withdraw" {% if transType == "withdraw" %} selected = "selected" {% endif %}> Withdraw </option>
+                                    <option value = "credit" {% if transType == "credit" %} selected = "selected" {% endif %}> Credit </option>
+                                    <option value = "deposit" {% if transType == "deposit" %} selected = "selected" {% endif %}> Deposit </option>
+                                </select>
+
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <input type="submit" value="Filter" name="actionBtn" style="height: 2rem;width: 6rem;"/>
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <input type="submit" value="Clear Filter" name="actionBtn" style="height: 2rem;width: 6rem;"/>
+                            </div>
+                        </div>
+                    </form>
+                        <div class="downloadBtn">
+                            <button class="pdf-all-button" style="width: 7rem;
+                            height: 2rem;">Download </button>
+                        </div>
+                    
+                   
+
+                </div>
+            </div>
+            {% if tableData %}
+            <div>
+                {% block TransactionTable %}
+                {% with tableData=tableData %}
+                {% include "table.html" %}
+                {% endwith %}
+                {% endblock %}
+            </div> 
+            {% else %}
+            {% if totalUnFilteredDataCount %} 
+            <h3> No Data available for the filter, please Reset the filter</h3>
+            {% else %}
+            <h3> No Transactions Done yet</h3>
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</body>
+
+</html>

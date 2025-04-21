@@ -1,0 +1,97 @@
+{% load static %}
+
+
+
+<html>
+  <head>
+    <style>
+      .container {
+        margin: 0;
+        overflow: hidden;
+      }
+  
+      .left {
+        width: 40% !important;
+        float: left !important;
+        margin-top: 0 !important;
+        background-color: #97144D !important;
+        height: 100vh !important;
+      }
+  
+      .right {
+        width: 60% !important;
+        float: right !important;
+        margin-top: 0 !important;
+        background-color: #ffffff !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        flex-direction: column !important;
+      }
+  
+      .alignAccordion {
+        display: flex;
+      }
+  
+      .alignSignUps {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        padding-top: 5rem;
+      }
+    </style>
+       <script>
+        function validateForm() {
+          var address = document.getElementById("address").value;
+          var city = document.getElementById("city").value;
+          var country = document.getElementById("country").value;
+          var postal_code = document.getElementById("postal_code").value;
+          if (address && city && country && postal_code) {
+            return true;
+          }
+          else {
+            alert("Please fill all the fields");
+            return false
+          }
+        }
+      </script>
+  </head>
+
+<body>
+  <div class="container">
+    <div class="left">
+      <img src="{% static 'img/logo.png' %}" alt="image" style="margin-top:4rem ;">
+    </div>
+    <div class="right alignSignUps ">
+        <h1>Online Banking Services</h1>
+        <p style="color:#000000">Login into your account</p>
+        <form method="POST"  style="width:45%">
+          {% csrf_token %}
+          <div class="alignAccordion">
+            <hr width="60px" color="grey" />
+            <hr width="60px" color="grey" />
+            <hr width="60px" color="#931a46" />
+            <hr width="60px" color="grey" />
+          </div>
+        <input type="hidden" name="form_id" id="signup3" value="signup3">
+        <label for="address" style="color:#000000; font-size:15px;">Address</label><br>
+        <input type="text" id="address" name="address" value="{{ address }}" style="font-size:11px; border: 2px solid grey; border-radius: 7px;padding: 5px; margin-bottom: 1rem;"><br>
+        <label for="city" style="color:#000000; font-size:15px;">City / Town</label><br>
+        <input type="text" id="city" name="city" value="{{ city }}" style="font-size:11px; border: 2px solid grey; border-radius: 7px;padding: 5px;"><br><br>
+        <label for="country" style="color:#000000; font-size:15px;">County
+        <label for="postal_code" style="color:#000000; font-size:15px;"><span style="display:inline-block; width: 125px;"></span>Post Code</label></label><br>
+        <input type="text" id="country" name="country" value="{{ country }}" style="font-size:11px; border: 2px solid grey; border-radius: 7px;padding: 5px;"><span style="display:inline-block; width: 2px; margin-left: 0.5rem;;"><input type="text" id="postal_code" value="{{ postal_code }}" name="postal_code" style="font-size:11px; border: 2px solid grey; border-radius: 7px;padding: 5px;"></span><br>
+        <div style="margin-top: 1.5rem ;">
+        <input type = "submit" name ="actionBtn" value="Back" style="background-color: white; color:#931a46; font-size:15px; border: 2px solid grey; border-radius: 7px;padding: 5px; width: 45%;"/>
+        <input type = "submit" name ="actionBtn" value="Proceed" onclick="return validateForm()" style="background-color: #931a46; color:white; font-size:15px; border: 2px solid grey; border-radius: 7px;padding: 5px; width: 45%;" />
+        </div>
+        
+        <p>Already have an account? <a style="background-color: #931a46; color:white; font-size:11px; border: 2px solid grey; border-radius: 7px;padding: 8px;" href="/login">Sign In</a></p>
+      </form> 
+  </div>
+</div>
+</div>
+</body>
+
+</html>
+

@@ -1,0 +1,369 @@
+{% load static %}
+<!DOCTYPE html>
+
+<!-- {% block content %} -->
+
+<html>
+
+<head>
+    <style>
+        .container {
+            margin: -1rem;
+            overflow: hidden;
+        }
+
+        .right {
+            width: 85%;
+            float: right;
+            margin-top: 0;
+            background-color: #ebebeb;
+            height: calc(100vh - 3rem);
+        }
+
+        .left {
+            width: 15%;
+            float: left;
+            margin-top: 0;
+            background-color: #ffffff;
+            height: calc(100vh - 4rem);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            padding: 1.5rem;
+            background-color: #f7f5f5;
+        }
+
+        .vertical-menu {
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+        }
+
+        .vertical-menu {
+            div {
+                background-color: #ffffff;
+                color: black;
+                display: block;
+                text-decoration: none;
+            }
+        }
+
+        .vertical-menu {
+            div:hover {
+                background-color: #97144d;
+                color: #ffffff
+            }
+
+            div:active {
+                background-color: #97144d;
+                color: #ffffff
+            }
+        }
+
+        .itemNav {
+            display: flex !important;
+            justify-content: space-evenly;
+            align-items: center;
+            padding-left: 0rem;
+            padding-right: 2rem;
+        }
+
+        .active {
+            background-color: #97144d !important;
+            color: #ffffff !important;
+        }
+
+        .menu {
+            display: flex;
+            flex-direction: column-reverse;
+        }
+
+        .alignHeader {
+            display: flex;
+            justify-content: space-evenly;
+        }
+
+        .btnStyle {
+            width: max-content;
+            height: fit-content;
+            margin-top: 1.5rem;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 4% auto;
+            /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            height: 50%;
+            /* Could be more or less, depending on screen size */
+        }
+
+        /* Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      td,
+      th {
+        border-bottom: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+
+      td, tr {
+        background-color: #ffffff;
+      }
+
+      tr:first-child {
+        background-color: #dddddd !important;
+      }
+
+      .statusChip {
+        color: #02b15a;
+        background-color: #02b15a33;
+        text-align: center;
+        width: 70px;
+        border-radius: 8px;
+        font-size: smaller;
+      }
+      .recurring {
+            padding-right: 0rem;
+            padding-left: 0.5rem;
+        }
+    </style>
+    <script>
+        function showContent(option) {
+            if (option == "dashboardOption") {
+                window.location.href = '/main/'
+            } else if (option == "transactionOption") {
+                window.location.href = '/transaction/'
+            } else if (option == "cardOption") {
+                window.location.href = '/card/'
+            } else if (option == "loanOption") {
+                window.location.href = '/loan/'
+            } else if (option == "investmentOption") {
+                window.location.href = '/investment/'
+            } else if (option == "settingsOption") {
+                window.location.href = '/settings/'
+            } else if (option == "chequebookOption") {
+                window.location.href = '/chequebook/'
+            }
+            else {
+                window.location.href = '/help/'
+            }
+        }
+
+        function logOut() {
+            window.history.replaceState(null, null, "/login");
+            sessionStorage.clear();
+            window.location.href = "/logout";
+        }
+
+    </script>
+    <script>
+        function getDivId() {
+            document.getElementById('myModal').style.display = 'block'
+        }
+        function validate() {
+        var account_number = document.getElementById("account_number").value;
+        var amount = document.getElementById("amount").value;
+        var frequency = document.getElementById("frequency").value;
+        if (account_number && frequency && amount) {
+          return true;
+        } else {
+          alert("Please fill all the fields");
+          return false;
+        }
+      }
+
+      function checkForError() {
+            var error_message = "{{ error_message }}";
+            if(error_message)
+               alert(error_message);
+        }
+
+    </script>
+    <script src="{% static 'js/script.js' %}"></script>
+</head>
+
+<body onload="checkForError()">
+    <div class="container">
+        <div class="row header"> </div>
+        <div class="left">
+            <div class="vertical-menu" id="menuNav">
+                <div class="itemNav" onclick="showContent('dashboardOption')" id="dashboardOption-nav">
+                    <img src="{% static 'img/dashboard.png' %}" alt="image">
+                    <p>Dashboard</p>
+                </div>
+                <div class="itemNav" onclick="showContent('transactionOption')" id="transactionOption-nav">
+                    <img src="{% static 'img/transaction.png' %}" alt="image">
+                    <p>Transaction</p>
+                </div>
+                <div class="itemNav" onclick="showContent('cardOption')" id="cardOption-nav"
+                    style="padding-right: 4.5rem;">
+                    <img src="{% static 'img/card.png' %}" alt="image">
+                    <p>Card</p>
+                </div>
+                <div class="itemNav" onclick="showContent('chequebookOption')" id="chequebookOption-nav"
+                     style="padding-right: 1.5rem;">
+                     <img src="{% static 'img/cheque.png' %}" alt="image" style="    width: 33px;
+                     height: 40px;">
+                    <p>Cheque Book</p>
+               </div>
+                <div class="itemNav" onclick="showContent('loanOption')" id="loanOption-nav"
+                    style="padding-right: 4.5rem;">
+                    <img src="{% static 'img/loan.png' %}" alt="image">
+                    <p>Loan</p>
+                </div>
+                <div class="itemNav active recurring" onclick="showContent('investmentOption')" id="investmentOption-nav">
+                    <img src="{% static 'img/investment.png' %}" alt="image">
+                    <p>Recurring Payment</p>
+                </div>
+                <div class="itemNav" onclick="showContent('settingsOption')" id="settingsOption-nav"
+                    style="padding-right: 3.5rem;">
+                    <img src="{% static 'img/setting.png' %}" alt="image">
+                    <p>Settings</p>
+                </div>
+            </div>
+            <div class="vertical-menu menu">
+                <div class="itemNav" onclick="logOut()" id="logoutOption-nav" style="padding-right: 3.5rem;">
+                    <img src="{% static 'img/logout.png' %}" alt="image">
+                    <p>Log out</p>
+                </div>
+                <div class="itemNav" onclick="showContent('helpOption')" id="helpOption-nav"
+                    style="padding-right: 4.9rem;">
+                    <img src="{% static 'img/help.png' %}" alt="image">
+                    <p>Help</p>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <div class="alignHeader">
+                <h2>Recurring Payment List</h2>
+                <button class="btnStyle" onclick="getDivId()"> Add New </button>
+            </div>
+            <div class="alignHeader">
+                {% if tableData %}
+                <table>
+                    <tr>
+                        <th>Date</th>
+                        <th>Account Number</th>
+                        <th>Amount</th>
+                        <th>Frequency</th>
+                        <th>Status</th>
+                    </tr>
+
+                    {% for obj in tableData %}
+                    <tr>
+                        <td>{{obj.ct}}</td>
+                        <td>{{obj.account_number}}</td>
+                        <td>£{{obj.amount}}</td>
+                        <td>{{obj.frequency}}</td>
+                        <td>
+                            <div class="statusChip">
+                                {% if obj.status == 'A' %}
+                                    Active
+                                {% else %}
+                                    Inactive
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% else %}
+                <h3>No Transactions Done yet</h3>
+
+                {% endif %}
+            </div>
+
+        </div>
+
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div id="included-html-container" class="alignHeader" style="flex-direction: column; align-items: center;">
+                    <h3>Enter Details for Recurrent Payment</h3>
+                    <form id="transferForm1" method="POST">
+                        {% csrf_token %}
+
+                        <div class="formAlignment">
+                            <label for="account_number" style="color:grey; font-size:16px;">
+                                Enter Account Number
+                            </label><br>
+                            <input type="number" id="account_number" name="account_number" minlength="1" maxlength="10"
+                                pattern="[0-9]+"
+                                style="font-size:16px; border: 2px solid grey; border-radius: 7px;padding: 5px;"><br>
+                            <label for="amount" style="color:grey; font-size:16px;">Enter Amount</label><br>
+                            <input type="number" id="amount" name="amount" minlength="1" maxlength="6" pattern="[0-9]+"
+                                style="font-size:16px; border: 2px solid grey; border-radius: 7px;padding: 5px;"><br>
+                            <label for="frequency" style="color: grey">Frequency</label><br />
+                            <select id="frequency" name="frequency" value="{{ frequency }}" style="
+                                font-size: 11px;
+                                border: 2px solid grey;
+                                border-radius: 7px;
+                                padding: 5px;
+                              ">
+                                <option value="Monthly">Monthly</option>
+                                <option value="Quarterly">Quarterly</option>
+                                <option value="Yearly">Yearly</option>
+                            </select>
+                            <br/>
+                            <input type="submit" value="Save" name="save" id="save"
+                                onclick="return validate()"
+                                style="padding: 1px 153px; background-color:#931a46; color:white; font-size:16px; border: 2px solid grey; border-radius: 7px; margin-top: 1rem;">
+
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<!--style="padding: 1px 80px;-->
+<!-- {% endblock content %} -->
