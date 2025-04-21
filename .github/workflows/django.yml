@@ -29,4 +29,4 @@ jobs:
 
       - name: Run Django Tests
         run: python manage.py test
-        working-directory: ./bank_app
+        working-directory: ./bank_apps
